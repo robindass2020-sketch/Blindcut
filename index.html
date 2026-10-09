@@ -13,6 +13,7 @@
     legend { font-size: 17px; font-weight: bold; color: #4da3ff; }
     input, select { width: 100%; padding: 12px; margin: 8px 0; font-size: 15px; box-sizing: border-box; background: #222; color: #fff; border: 1px solid #555; border-radius: 6px; }
     .status { background: #222; padding: 12px; border-radius: 6px; margin: 10px 0; font-weight: bold; border-left: 4px solid #0066cc; }
+    video { width: 100%; max-height: 240px; background: #000; border-radius: 8px; margin-top: 10px; }
   </style>
 </head>
 <body>
@@ -21,43 +22,194 @@
 
   <fieldset>
     <legend>Select Files (கோப்புகள் தேர்வு)</legend>
-    <label for="v">Choose Video (வீடியோ கோப்பு):</label>
-    <input type="file" id="v" accept="video/*" aria-label="Choose Video - வீடியோ கோப்பைத் தேர்ந்தெடுக்கவும்">
+    <label for="videoInput">Choose Video (வீடியோ கோப்பு):</label>
+    <input type="file" id="videoInput" accept="video/*" aria-label="Choose Video - வீடியோ கோப்பைத் தேர்ந்தெடுக்கவும்">
 
-    <label for="a">Add Background Music (பின்னணி இசை):</label>
-    <input type="file" id="a" accept="audio/*" aria-label="Add Background Audio - பின்னணி ஆடியோ கோப்பைத் தேர்ந்தெடுக்கவும்">
+    <label for="audioInput">Add Background Music (பின்னணி இசை):</label>
+    <input type="file" id="audioInput" accept="audio/*" aria-label="Add Background Audio - பின்னணி ஆடியோ கோப்பைத் தேர்ந்தெடுக்கவும்">
+
+    <video id="player" playsinline></video>
+    <audio id="bgAudio" loop></audio>
   </fieldset>
 
   <fieldset>
     <legend>Playback & Trim (இயக்குதல் & வெட்டுதல்)</legend>
-    <div class="status" role="status" aria-live="polite">Time (நேரம்): 0s</div>
+    <div class="status" role="status" aria-live="polite" id="statusBox">Time (நேரம்): 0s | Start: 0s | End: 0s</div>
     
-    <button type="button" aria-label="Play or Pause - இயக்கு அல்லது நிறுத்து">Play / Pause (இயக்கு / நிறுத்து)</button>
-    <button type="button" aria-label="Rewind 1 Second - ஒரு வினாடி பின்னோக்கி">-1s Rewind (1 வினாடி பின்னோக்கி)</button>
-    <button type="button" aria-label="Forward 1 Second - ஒரு வினாடி முன்னோக்கி">+1s Forward (1 வினாடி முன்னோக்கி)</button>
-    <button type="button" aria-label="Set Trim Start Point - தொடக்கப் புள்ளி அமை">Set Start Point (தொடக்கப் புள்ளி)</button>
-    <button type="button" aria-label="Set Trim End Point - முடிவுப் புள்ளி அமை">Set End Point (முடிவுப் புள்ளி)</button>
-    <button type="button" aria-label="Preview Cut - முன்னோட்டம் கேள்">Preview Cut (முன்னோட்டம் கேள்)</button>
+    <button type="button" id="btnPlay" aria-label="Play or Pause - இயக்கு அல்லது நிறுத்து">Play / Pause (இயக்கு / நிறுத்து)</button>
+    <button type="button" id="btnRewind" aria-label="Rewind 1 Second - ஒரு வினாடி பின்னோக்கி">-1s Rewind (1 வினாடி பின்னோக்கி)</button>
+    <button type="button" id="btnForward" aria-label="Forward 1 Second - ஒரு வினாடி முன்னோக்கி">+1s Forward (1 வினாடி முன்னோக்கி)</button>
+    <button type="button" id="btnSetStart" aria-label="Set Trim Start Point - தொடக்கப் புள்ளி அமை">Set Start Point (தொடக்கப் புள்ளி)</button>
+    <button type="button" id="btnSetEnd" aria-label="Set Trim End Point - முடிவுப் புள்ளி அமை">Set End Point (முடிவுப் புள்ளி)</button>
+    <button type="button" id="btnPreview" aria-label="Preview Cut - முன்னோட்டம் கேள்">Preview Cut (முன்னோட்டம் கேள்)</button>
   </fieldset>
 
   <fieldset>
     <legend>Settings (அமைப்புகள்)</legend>
-    <label for="vol">Music Volume (இசை ஒலி அளவு):</label>
-    <input type="range" id="vol" min="0" max="100" value="30" aria-label="Background music volume - இசை ஒலி அளவு">
-
-    <label for="q">Quality (தரம்):</label>
-    <select id="q" aria-label="Video quality - வீடியோ தரம்">
-      <option value="orig">Original (அசல் தரம்)</option>
-      <option value="1080">1080p Full HD (முழு எச்டி)</option>
-      <option value="720">720p HD (எச்டி)</option>
-    </select>
+    <label for="volInput">Music Volume (இசை ஒலி அளவு):</label>
+    <input type="range" id="volInput" min="0" max="100" value="30" aria-label="Background music volume - இசை ஒலி அளவு">
   </fieldset>
 
   <fieldset>
     <legend>Export (சேமிப்பு)</legend>
-    <button type="button" aria-label="Cut and Save Video - வீடியோவை வெட்டிச் சேமி">Save Video (வீடியோ சேமி)</button>
-    <button type="button" aria-label="Extract Audio Only - ஆடியோவை மட்டும் சேமி">Save Audio Only (ஆடியோ மட்டும் சேமி)</button>
+    <button type="button" id="btnSaveVideo" aria-label="Cut and Save Video - வீடியோவை வெட்டிச் சேமி">Save Video (வீடியோ சேமி)</button>
+    <button type="button" id="btnSaveAudio" aria-label="Extract Audio Only - ஆடியோவை மட்டும் சேமி">Save Audio Only (ஆடியோ மட்டும் சேமி)</button>
+    <div id="exportStatus" role="status" aria-live="polite" style="margin-top: 10px; font-weight: bold; color: #4da3ff;"></div>
   </fieldset>
 
+  <script>
+    const player = document.getElementById('player');
+    const bgAudio = document.getElementById('bgAudio');
+    const videoInput = document.getElementById('videoInput');
+    const audioInput = document.getElementById('audioInput');
+    const statusBox = document.getElementById('statusBox');
+    const exportStatus = document.getElementById('exportStatus');
+    const volInput = document.getElementById('volInput');
+
+    let startTime = 0;
+    let endTime = 0;
+    let isPreviewing = false;
+
+    function updateStatus(extraMsg = "") {
+      const cur = player.currentTime.toFixed(1);
+      const total = isNaN(player.duration) ? 0 : player.duration.toFixed(1);
+      const start = startTime.toFixed(1);
+      const end = endTime.toFixed(1);
+      statusBox.innerText = `Time: ${cur}s / ${total}s | Start: ${start}s | End: ${end}s ${extraMsg}`;
+    }
+
+    videoInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        player.src = URL.createObjectURL(file);
+        player.onloadedmetadata = () => {
+          startTime = 0;
+          endTime = player.duration;
+          updateStatus("- Video Loaded (வீடியோ தயாராகிவிட்டது)");
+        };
+      }
+    });
+
+    audioInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        bgAudio.src = URL.createObjectURL(file);
+        updateStatus("- Background Audio Loaded (பின்னணி இசை தயாராகிவிட்டது)");
+      }
+    });
+
+    volInput.addEventListener('input', (e) => {
+      bgAudio.volume = e.target.value / 100;
+    });
+
+    document.getElementById('btnPlay').addEventListener('click', () => {
+      if (player.paused) {
+        player.play();
+        if (bgAudio.src) bgAudio.play();
+      } else {
+        player.pause();
+        if (bgAudio.src) bgAudio.pause();
+      }
+    });
+
+    document.getElementById('btnRewind').addEventListener('click', () => {
+      player.currentTime = Math.max(0, player.currentTime - 1);
+      updateStatus();
+    });
+
+    document.getElementById('btnForward').addEventListener('click', () => {
+      player.currentTime = Math.min(player.duration || 0, player.currentTime + 1);
+      updateStatus();
+    });
+
+    document.getElementById('btnSetStart').addEventListener('click', () => {
+      startTime = player.currentTime;
+      if (startTime > endTime) endTime = player.duration;
+      updateStatus("- Start Point Set (தொடக்கப் புள்ளி வைக்கப்பட்டது)");
+    });
+
+    document.getElementById('btnSetEnd').addEventListener('click', () => {
+      endTime = player.currentTime;
+      if (endTime < startTime) startTime = 0;
+      updateStatus("- End Point Set (முடிவுப் புள்ளி வைக்கப்பட்டது)");
+    });
+
+    document.getElementById('btnPreview').addEventListener('click', () => {
+      player.currentTime = startTime;
+      isPreviewing = true;
+      player.play();
+      if (bgAudio.src) bgAudio.play();
+      updateStatus("- Preview Playing (முன்னோட்டம் இயங்குகிறது)");
+    });
+
+    player.addEventListener('timeupdate', () => {
+      updateStatus();
+      if (isPreviewing && player.currentTime >= endTime) {
+        player.pause();
+        if (bgAudio.src) bgAudio.pause();
+        isPreviewing = false;
+        updateStatus("- Preview Ended (முன்னோட்டம் முடிந்தது)");
+      }
+    });
+
+    // எக்ஸ்போர்ட் (வீடியோ மற்றும் ஆடியோவாகப் பதிவு செய்து டவுன்லோட் செய்யும் முறை)
+    function exportMedia(recordAudioOnly = false) {
+      if (!player.src) {
+        alert("Please select a video file first. (முதலில் வீடியோ கோப்பைத் தேர்ந்தெடுக்கவும்)");
+        return;
+      }
+
+      exportStatus.innerText = "Processing & Saving... Please wait. (கோப்பு சேமிக்கப்படுகிறது...)";
+      player.pause();
+      if (bgAudio.src) bgAudio.pause();
+
+      player.currentTime = startTime;
+
+      let stream;
+      if (recordAudioOnly) {
+        stream = player.captureStream ? player.captureStream() : player.mozCaptureStream();
+        const audioTracks = stream.getAudioTracks();
+        if (audioTracks.length === 0) {
+          exportStatus.innerText = "No audio track found in video!";
+          return;
+        }
+        stream = new MediaStream(audioTracks);
+      } else {
+        stream = player.captureStream ? player.captureStream() : player.mozCaptureStream();
+      }
+
+      const recorder = new MediaRecorder(stream);
+      const chunks = [];
+
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) chunks.push(e.data);
+      };
+
+      recorder.onstop = () => {
+        const mimeType = recordAudioOnly ? 'audio/webm' : 'video/webm';
+        const blob = new Blob(chunks, { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = recordAudioOnly ? 'BlindCut_Audio.webm' : 'BlindCut_Video.webm';
+        a.click();
+        exportStatus.innerText = "Downloaded successfully! (வெற்றிகரமாகச் சேமிக்கப்பட்டது!)";
+      };
+
+      recorder.start();
+      player.play();
+      if (bgAudio.src) bgAudio.play();
+
+      const duration = (endTime - startTime) * 1000;
+      setTimeout(() => {
+        recorder.stop();
+        player.pause();
+        if (bgAudio.src) bgAudio.pause();
+      }, duration);
+    }
+
+    document.getElementById('btnSaveVideo').addEventListener('click', () => exportMedia(false));
+    document.getElementById('btnSaveAudio').addEventListener('click', () => exportMedia(true));
+  </script>
 </body>
 </html>
