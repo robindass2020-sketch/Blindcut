@@ -1,56 +1,63 @@
 <!DOCTYPE html>
-<html lang="ta">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BlindCut</title>
+  <title>BlindCut - Media Editor</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; background: #000; color: #fff; }
-    button { background: #0055ff; color: #fff; padding: 15px; font-size: 18px; margin: 10px 0; border-radius: 8px; width: 100%; border: 2px solid #fff; }
-    input, select { width: 100%; padding: 15px; margin: 10px 0; font-size: 18px; box-sizing: border-box; }
-    fieldset { margin-bottom: 20px; border: 1px solid #555; padding: 15px; border-radius: 8px; }
-    legend { font-size: 20px; font-weight: bold; padding: 0 10px; }
+    body { font-family: sans-serif; padding: 18px; background: #121212; color: #ffffff; line-height: 1.5; }
+    h1 { font-size: 20px; text-align: center; }
+    button { background: #0066cc; color: #ffffff; padding: 14px; font-size: 16px; margin: 8px 0; border-radius: 8px; width: 100%; border: none; font-weight: bold; }
+    button:focus, input:focus, select:focus { outline: 3px solid #ffcc00; }
+    fieldset { margin-bottom: 20px; border: 1px solid #444; border-radius: 8px; padding: 12px; }
+    legend { font-size: 17px; font-weight: bold; color: #4da3ff; }
+    input, select { width: 100%; padding: 12px; margin: 8px 0; font-size: 15px; box-sizing: border-box; background: #222; color: #fff; border: 1px solid #555; border-radius: 6px; }
+    .status { background: #222; padding: 12px; border-radius: 6px; margin: 10px 0; font-weight: bold; border-left: 4px solid #0066cc; }
   </style>
 </head>
 <body>
-  <h1>பிளைண்ட்கட் - எடிட்டர்</h1>
+
+  <h1>BlindCut - Media Editor (மீடியா எடிட்டர்)</h1>
 
   <fieldset>
-    <legend>கோப்புகள் தேர்வு</legend>
-    <label for="v">வீடியோ கோப்பைத் தேர்ந்தெடுக்கவும்:</label>
-    <input type="file" id="v" accept="video/*" aria-label="வீடியோ கோப்பைத் தேர்ந்தெடுக்கவும்">
+    <legend>Select Files (கோப்புகள் தேர்வு)</legend>
+    <label for="v">Choose Video (வீடியோ கோப்பு):</label>
+    <input type="file" id="v" accept="video/*" aria-label="Choose Video - வீடியோ கோப்பைத் தேர்ந்தெடுக்கவும்">
 
-    <label for="a">பின்னணி ஆடியோவைத் தேர்ந்தெடுக்கவும்:</label>
-    <input type="file" id="a" accept="audio/*" aria-label="பின்னணி ஆடியோ கோப்பைத் தேர்ந்தெடுக்கவும்">
+    <label for="a">Add Background Music (பின்னணி இசை):</label>
+    <input type="file" id="a" accept="audio/*" aria-label="Add Background Audio - பின்னணி ஆடியோ கோப்பைத் தேர்ந்தெடுக்கவும்">
   </fieldset>
 
   <fieldset>
-    <legend>வீடியோ கட்டுப்பாடு மற்றும் வெட்டுதல்</legend>
-    <button type="button" aria-label="வீடியோவை இயக்கு அல்லது நிறுத்து">இயக்கு அல்லது நிறுத்து</button>
-    <button type="button" aria-label="ஒரு வினாடி பின்னோக்கி நகர்த்து">1 வினாடி பின்னோக்கி</button>
-    <button type="button" aria-label="ஒரு வினாடி முன்னோக்கி நகர்த்து">1 வினாடி முன்னோக்கி</button>
-    <button type="button" aria-label="வெட்டத் தொடங்கும் இடத்தை அமைக்கவும்">தொடக்கப் புள்ளி வை</button>
-    <button type="button" aria-label="வெட்டி முடிக்கும் இடத்தை அமைக்கவும்">முடிவுப் புள்ளி வை</button>
-    <button type="button" aria-label="வெட்டிய பகுதியை மட்டும் கேட்டுப் பார்க்கவும்">முன்னோட்டம் கேள்</button>
+    <legend>Playback & Trim (இயக்குதல் & வெட்டுதல்)</legend>
+    <div class="status" role="status" aria-live="polite">Time (நேரம்): 0s</div>
+    
+    <button type="button" aria-label="Play or Pause - இயக்கு அல்லது நிறுத்து">Play / Pause (இயக்கு / நிறுத்து)</button>
+    <button type="button" aria-label="Rewind 1 Second - ஒரு வினாடி பின்னோக்கி">-1s Rewind (1 வினாடி பின்னோக்கி)</button>
+    <button type="button" aria-label="Forward 1 Second - ஒரு வினாடி முன்னோக்கி">+1s Forward (1 வினாடி முன்னோக்கி)</button>
+    <button type="button" aria-label="Set Trim Start Point - தொடக்கப் புள்ளி அமை">Set Start Point (தொடக்கப் புள்ளி)</button>
+    <button type="button" aria-label="Set Trim End Point - முடிவுப் புள்ளி அமை">Set End Point (முடிவுப் புள்ளி)</button>
+    <button type="button" aria-label="Preview Cut - முன்னோட்டம் கேள்">Preview Cut (முன்னோட்டம் கேள்)</button>
   </fieldset>
 
   <fieldset>
-    <legend>அமைப்புகள்</legend>
-    <label for="vol">பின்னணி இசை ஒலியளவு:</label>
-    <input type="range" id="vol" min="0" max="100" value="30" aria-label="பின்னணி இசை ஒலியளவு">
+    <legend>Settings (அமைப்புகள்)</legend>
+    <label for="vol">Music Volume (இசை ஒலி அளவு):</label>
+    <input type="range" id="vol" min="0" max="100" value="30" aria-label="Background music volume - இசை ஒலி அளவு">
 
-    <label for="q">வீடியோ தரம் தேர்வு:</label>
-    <select id="q" aria-label="வீடியோ தரம்">
-      <option value="orig">அசல் தரம்</option>
-      <option value="1080">முழு எச்டி தரம்</option>
-      <option value="720">எச்டி தரம்</option>
+    <label for="q">Quality (தரம்):</label>
+    <select id="q" aria-label="Video quality - வீடியோ தரம்">
+      <option value="orig">Original (அசல் தரம்)</option>
+      <option value="1080">1080p Full HD (முழு எச்டி)</option>
+      <option value="720">720p HD (எச்டி)</option>
     </select>
   </fieldset>
 
   <fieldset>
-    <legend>சேமிப்பு</legend>
-    <button type="button" aria-label="வீடியோவை வெட்டி போனில் சேமிக்கவும்">வீடியோவை வெட்டிச் சேமி</button>
-    <button type="button" aria-label="வீடியோவிலிருந்து ஒலியை மட்டும் தனியாகப் பிரித்துச் சேமிக்கவும்">ஆடியோவை மட்டும் பிரித்துச் சேமி</button>
+    <legend>Export (சேமிப்பு)</legend>
+    <button type="button" aria-label="Cut and Save Video - வீடியோவை வெட்டிச் சேமி">Save Video (வீடியோ சேமி)</button>
+    <button type="button" aria-label="Extract Audio Only - ஆடியோவை மட்டும் சேமி">Save Audio Only (ஆடியோ மட்டும் சேமி)</button>
   </fieldset>
+
 </body>
 </html>
