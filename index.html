@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlindCut</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #000; color: #fff; }
+    button { background: #0055ff; color: #fff; padding: 15px; font-size: 18px; margin: 10px 0; border-radius: 8px; width: 100%; border: 2px solid #fff; }
+    input, select { width: 100%; padding: 15px; margin: 10px 0; font-size: 18px; box-sizing: border-box; }
+    fieldset { margin-bottom: 20px; border: 1px solid #555; padding: 15px; border-radius: 8px; }
+    legend { font-size: 20px; font-weight: bold; padding: 0 10px; }
+  </style>
+</head>
+<body>
+  <h1>பிளைண்ட்கட் - எடிட்டர்</h1>
+
+  <fieldset>
+    <legend>கோப்புகள் தேர்வு</legend>
+    <label for="v">வீடியோ கோப்பைத் தேர்ந்தெடுக்கவும்:</label>
+    <input type="file" id="v" accept="video/*" aria-label="வீடியோ கோப்பைத் தேர்ந்தெடுக்கவும்">
+
+    <label for="a">பின்னணி ஆடியோவைத் தேர்ந்தெடுக்கவும்:</label>
+    <input type="file" id="a" accept="audio/*" aria-label="பின்னணி ஆடியோ கோப்பைத் தேர்ந்தெடுக்கவும்">
+  </fieldset>
+
+  <fieldset>
+    <legend>வீடியோ கட்டுப்பாடு மற்றும் வெட்டுதல்</legend>
+    <button type="button" aria-label="வீடியோவை இயக்கு அல்லது நிறுத்து">இயக்கு அல்லது நிறுத்து</button>
+    <button type="button" aria-label="ஒரு வினாடி பின்னோக்கி நகர்த்து">1 வினாடி பின்னோக்கி</button>
+    <button type="button" aria-label="ஒரு வினாடி முன்னோக்கி நகர்த்து">1 வினாடி முன்னோக்கி</button>
+    <button type="button" aria-label="வெட்டத் தொடங்கும் இடத்தை அமைக்கவும்">தொடக்கப் புள்ளி வை</button>
+    <button type="button" aria-label="வெட்டி முடிக்கும் இடத்தை அமைக்கவும்">முடிவுப் புள்ளி வை</button>
+    <button type="button" aria-label="வெட்டிய பகுதியை மட்டும் கேட்டுப் பார்க்கவும்">முன்னோட்டம் கேள்</button>
+  </fieldset>
+
+  <fieldset>
+    <legend>அமைப்புகள்</legend>
+    <label for="vol">பின்னணி இசை ஒலியளவு:</label>
+    <input type="range" id="vol" min="0" max="100" value="30" aria-label="பின்னணி இசை ஒலியளவு">
+
+    <label for="q">வீடியோ தரம் தேர்வு:</label>
+    <select id="q" aria-label="வீடியோ தரம்">
+      <option value="orig">அசல் தரம்</option>
+      <option value="1080">முழு எச்டி தரம்</option>
+      <option value="720">எச்டி தரம்</option>
+    </select>
+  </fieldset>
+
+  <fieldset>
+    <legend>சேமிப்பு</legend>
+    <button type="button" aria-label="வீடியோவை வெட்டி போனில் சேமிக்கவும்">வீடியோவை வெட்டிச் சேமி</button>
+    <button type="button" aria-label="வீடியோவிலிருந்து ஒலியை மட்டும் தனியாகப் பிரித்துச் சேமிக்கவும்">ஆடியோவை மட்டும் பிரித்துச் சேமி</button>
+  </fieldset>
+</body>
+</html>
